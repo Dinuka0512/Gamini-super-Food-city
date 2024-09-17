@@ -1,0 +1,56 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package supermarket.edu.ijse.Model;
+import java.util.List;
+import supermarket.edu.ijse.DBConnection.DBConnection;
+import supermarket.edu.ijse.Dto.ItemDto;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+/**
+ *
+ * @author dinuka
+ */
+public class ItemModel {
+    public List<ItemDto> getAllItem() throws ClassNotFoundException, SQLException{
+        String quere = "Select * From Item";
+        Connection con = DBConnection.getInstance().getConnection();
+        PreparedStatement stm = con.prepareCall(quere);
+        
+        ResultSet res = stm.executeQuery();
+        List<ItemDto> dtos = new ArrayList<>();
+        if(res.next()){
+            while(res.next()){
+                ItemDto dto = new ItemDto(
+                        res.getString("ItemCode"),
+                        res.getString("Description"),
+                        res.getString("PackSize"),
+                        res.getDouble("UnitPrice"),
+                        res.getInt("QtyOnHand")
+                );
+                dtos.add(dto);
+            }
+            return dtos;
+        }
+        return null;
+    }
+    
+    public boolean saveItem(ItemDto dto) throws ClassNotFoundException, SQLException{
+        String quere = "INSERT INTO Item VALUES (?,?,?,?,?)";
+        Connection con = DBConnection.getInstance().getConnection();
+        PreparedStatement stm = con.prepareStatement(quere);
+        
+        stm.setString(1, dto.getItemId());
+        stm.setString(2, dto.getDescription());
+        stm.setString(3, dto.getPackSize());
+        stm.setDouble(4, dto.getPrice());
+        stm.setInt(5, dto.getQty());
+        
+        int res = stm.executeUpdate();
+        return (res != 0)? true :false;
+    }
+}
