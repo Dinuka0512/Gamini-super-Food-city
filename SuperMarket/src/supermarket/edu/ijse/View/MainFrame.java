@@ -78,6 +78,11 @@ public class MainFrame extends javax.swing.JFrame {
         btnOrderManage.setBackground(new java.awt.Color(54, 84, 134));
         btnOrderManage.setForeground(new java.awt.Color(255, 255, 255));
         btnOrderManage.setText("Orders");
+        btnOrderManage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOrderManageActionPerformed(evt);
+            }
+        });
 
         btnOrderDetailManage.setBackground(new java.awt.Color(54, 84, 134));
         btnOrderDetailManage.setForeground(new java.awt.Color(255, 255, 255));
@@ -148,6 +153,10 @@ public class MainFrame extends javax.swing.JFrame {
         itemPanelView();
     }//GEN-LAST:event_btnItemManageActionPerformed
 
+    private void btnOrderManageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOrderManageActionPerformed
+        orderPanelView();
+    }//GEN-LAST:event_btnOrderManageActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -166,6 +175,15 @@ public class MainFrame extends javax.swing.JFrame {
         MainItemManagePanelView mainItemPanel = new MainItemManagePanelView();
         mainItemPanel.setSize(panel.getWidth(), panel.getHeight());
         panel.add(mainItemPanel);
+        panel.repaint();
+        panel.revalidate();
+    }
+    
+    private void orderPanelView(){
+        panel.removeAll();
+        OrderPanelView orderPanel = new OrderPanelView();
+        orderPanel.setSize(panel.getWidth(), panel.getHeight());
+        panel.add(orderPanel);
         panel.repaint();
         panel.revalidate();
     }

@@ -23,4 +23,9 @@ public class ItemController {
         boolean res = itemModel.saveItem(dto);
         return res;
     }
+    
+    public ItemDto searchItem(String id) throws ClassNotFoundException, SQLException{
+        ItemDto dto = itemModel.searchItem(id);
+        return dto;
+    }
 }

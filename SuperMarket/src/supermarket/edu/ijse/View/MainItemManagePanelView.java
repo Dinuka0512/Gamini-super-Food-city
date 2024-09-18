@@ -162,7 +162,13 @@ public class MainItemManagePanelView extends javax.swing.JPanel {
     }//GEN-LAST:event_btnAddItemActionPerformed
 
     private void btnSearchItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchItemActionPerformed
-        
+        try {
+            searchItem();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainItemManagePanelView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainItemManagePanelView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnSearchItemActionPerformed
 
     private void btnUpdateItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateItemActionPerformed
@@ -182,6 +188,14 @@ public class MainItemManagePanelView extends javax.swing.JPanel {
         panel.revalidate();
     }
     
+    private void searchItem() throws ClassNotFoundException, SQLException{
+        panel.removeAll();
+        SearchItemPanelView searchItem = new SearchItemPanelView();
+        searchItem.setSize(panel.getWidth(), panel.getHeight());
+        panel.add(searchItem);
+        panel.repaint();
+        panel.revalidate();
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddItem;

@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 /**
  *
  * @author dinuka
@@ -52,5 +53,26 @@ public class ItemModel {
         
         int res = stm.executeUpdate();
         return (res != 0)? true :false;
+    }
+    
+    public ItemDto searchItem(String id) throws ClassNotFoundException, SQLException{
+        String queree = "Select * FROM Item Where ItemCode = ?";
+        Connection con = DBConnection.getInstance().getConnection();
+        PreparedStatement stm = con.prepareStatement(queree);
+        
+        stm.setString(1, id);
+        
+        ResultSet res = stm.executeQuery();
+        if(res.next()){
+            ItemDto dto = new ItemDto(
+                res.getString("ItemCode"),
+                res.getString("Description"),
+                res.getString("PackSize"),
+                res.getDouble("UnitPrice"),
+                res.getInt("QtyOnHand")
+            );
+            return dto;
+        }
+        return null;
     }
 }
