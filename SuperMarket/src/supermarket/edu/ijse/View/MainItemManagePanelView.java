@@ -172,11 +172,23 @@ public class MainItemManagePanelView extends javax.swing.JPanel {
     }//GEN-LAST:event_btnSearchItemActionPerformed
 
     private void btnUpdateItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateItemActionPerformed
-        
+        try {
+            updateItem();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainItemManagePanelView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainItemManagePanelView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnUpdateItemActionPerformed
 
     private void btnDeleteItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteItemActionPerformed
-        
+        try {
+            deleteItem();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(MainItemManagePanelView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(MainItemManagePanelView.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnDeleteItemActionPerformed
 
     private void addItem() throws ClassNotFoundException, SQLException{
@@ -197,16 +209,30 @@ public class MainItemManagePanelView extends javax.swing.JPanel {
         panel.revalidate();
     }
     
+    private void updateItem() throws ClassNotFoundException, SQLException{
+        panel.removeAll();
+        UpdateItemPanelView updateItem = new UpdateItemPanelView();
+        updateItem.setSize(panel.getWidth(), panel.getHeight());
+        panel.add(updateItem);
+        panel.repaint();
+        panel.revalidate();
+    }
+    
+    private void deleteItem() throws ClassNotFoundException, SQLException{
+        panel.removeAll();
+        DeleteItemPanelView deleteItem = new DeleteItemPanelView();
+        deleteItem.setSize(panel.getWidth(), panel.getHeight());
+        panel.add(deleteItem);
+        panel.repaint();
+        panel.revalidate();
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddItem;
     private javax.swing.JButton btnDeleteItem;
     private javax.swing.JButton btnSearchItem;
     private javax.swing.JButton btnUpdateItem;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel panel;

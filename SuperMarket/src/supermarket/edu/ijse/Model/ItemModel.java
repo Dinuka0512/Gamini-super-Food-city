@@ -75,4 +75,30 @@ public class ItemModel {
         }
         return null;
     }
+    
+    public boolean itemUpdate(ItemDto dto) throws ClassNotFoundException, SQLException{
+        Connection con = DBConnection.getInstance().getConnection();
+        String queree = "UPDATE Item SET Description = ?, PackSize = ?, UnitPrice = ?, QtyOnHand = ? where ItemCode = ?";
+        PreparedStatement stm = con.prepareStatement(queree);
+        
+        stm.setString(1, dto.getDescription());
+        stm.setString(2, dto.getPackSize());
+        stm.setDouble(3, dto.getPrice());
+        stm.setInt(4, dto.getQty());
+        stm.setString(5, dto.getItemId());
+        
+        int res = stm.executeUpdate();
+        return (res >0)? true: false;
+    }
+    
+    public boolean deleteItem(String id) throws ClassNotFoundException, SQLException{
+        Connection con = DBConnection.getInstance().getConnection();
+        String quere = "DELETE FROM Item Where ItemCode = ?";
+        PreparedStatement stm = con.prepareStatement(quere);
+        
+        stm.setString(1, id);
+        
+        int res = stm.executeUpdate();
+        return (res > 0 )? true: false;
+    }
 }

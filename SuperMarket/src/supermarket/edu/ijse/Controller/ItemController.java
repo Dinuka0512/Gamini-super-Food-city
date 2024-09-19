@@ -28,4 +28,14 @@ public class ItemController {
         ItemDto dto = itemModel.searchItem(id);
         return dto;
     }
+    
+    public boolean itemUpdate(ItemDto dto) throws ClassNotFoundException, SQLException{
+        boolean res = itemModel.itemUpdate(dto);
+        return res;
+    }
+    
+    public boolean deleteItem(String id) throws ClassNotFoundException, SQLException{
+        boolean res = itemModel.deleteItem(id);
+        return res;
+    }
 }
