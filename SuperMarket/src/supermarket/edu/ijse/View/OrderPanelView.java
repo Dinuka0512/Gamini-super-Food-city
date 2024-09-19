@@ -4,16 +4,19 @@
  */
 package supermarket.edu.ijse.View;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import supermarket.edu.ijse.Dto.ItemDto;
-import supermarket.edu.ijse.Dto.CustomerDto;
 import supermarket.edu.ijse.Controller.CustomerController;
+import supermarket.edu.ijse.Dto.CustomerDto;
 import supermarket.edu.ijse.Controller.ItemController;
+import supermarket.edu.ijse.Dto.ItemDto;
+import supermarket.edu.ijse.Dto.OrderDetailDto;
+import supermarket.edu.ijse.Controller.OrderController;
 import supermarket.edu.ijse.Dto.OrderDto;
 /**
  *
@@ -21,14 +24,16 @@ import supermarket.edu.ijse.Dto.OrderDto;
  */
 public class OrderPanelView extends javax.swing.JPanel {
     
-    private ItemController itemController = new ItemController();
-    private CustomerController custController = new CustomerController();
-    private static int columnNumber = 0;
+    private final CustomerController custContro = new CustomerController();
+    private final ItemController itemContro = new ItemController();
+    private final ArrayList<OrderDetailDto> orderDetailDto = new ArrayList<>();
+    private final OrderController orderController = new OrderController();
     /**
      * Creates new form OrderPanelView
      */
     public OrderPanelView() {
         initComponents();
+        tableLoard();
     }
 
     /**
@@ -43,44 +48,53 @@ public class OrderPanelView extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtOrderId = new javax.swing.JTextField();
-        txtCustIdSearch = new javax.swing.JTextField();
+        txtOrderID = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        btnCustIdSearch = new javax.swing.JButton();
+        txtCustID = new javax.swing.JTextField();
+        txtItemID = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        txtItemCodeSearch = new javax.swing.JTextField();
-        btnItemSearch = new javax.swing.JButton();
-        jLabel5 = new javax.swing.JLabel();
         txtQty = new javax.swing.JTextField();
+        jLabel5 = new javax.swing.JLabel();
         txtDiscount = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
-        btnAddCart = new javax.swing.JButton();
+        btnCustIdSearch = new javax.swing.JButton();
+        btnItemIdSearch = new javax.swing.JButton();
+        btnAddToCard = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
-        jButton4 = new javax.swing.JButton();
-        lableCustName = new javax.swing.JLabel();
-        labelItemName = new javax.swing.JLabel();
+        lableCustId = new javax.swing.JLabel();
+        lableItemId = new javax.swing.JLabel();
+        btnPlaceOrder = new javax.swing.JButton();
+        clearTable = new javax.swing.JButton();
 
         jPanel1.setBackground(new java.awt.Color(127, 199, 217));
 
-        jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Liberation Sans", 1, 15)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(15, 16, 53));
-        jLabel1.setText("   Order Frame");
+        jLabel1.setText("   Place Order");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 716, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
         );
 
-        jLabel2.setText("Order Id");
+        jLabel2.setText("Order ID :");
 
-        jLabel3.setText("Customer Id");
+        jLabel3.setText("Customer ID :");
+
+        jLabel4.setText("Item ID :");
+
+        jLabel5.setText("Qty :");
+
+        jLabel6.setText("Discount :");
 
         btnCustIdSearch.setBackground(new java.awt.Color(102, 153, 255));
         btnCustIdSearch.setText("Search");
@@ -90,41 +104,35 @@ public class OrderPanelView extends javax.swing.JPanel {
             }
         });
 
-        jLabel4.setText("Item Code");
-
-        btnItemSearch.setBackground(new java.awt.Color(102, 153, 255));
-        btnItemSearch.setText("Search");
-        btnItemSearch.addActionListener(new java.awt.event.ActionListener() {
+        btnItemIdSearch.setBackground(new java.awt.Color(102, 153, 255));
+        btnItemIdSearch.setText("Search");
+        btnItemIdSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnItemSearchActionPerformed(evt);
+                btnItemIdSearchActionPerformed(evt);
             }
         });
 
-        jLabel5.setText("Qty");
-
-        jLabel6.setText("Discount");
-
-        btnAddCart.setBackground(new java.awt.Color(102, 153, 255));
-        btnAddCart.setText("Add to Cart");
-        btnAddCart.addActionListener(new java.awt.event.ActionListener() {
+        btnAddToCard.setBackground(new java.awt.Color(102, 153, 255));
+        btnAddToCard.setText("Add to Cart");
+        btnAddToCard.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAddCartActionPerformed(evt);
+                btnAddToCardActionPerformed(evt);
             }
         });
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Order Id", "ItemCode", "qty", "Discount"
+                "Item ID", "Qty", "Discount"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -136,19 +144,31 @@ public class OrderPanelView extends javax.swing.JPanel {
             table.getColumnModel().getColumn(0).setResizable(false);
             table.getColumnModel().getColumn(1).setResizable(false);
             table.getColumnModel().getColumn(2).setResizable(false);
-            table.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        jButton4.setBackground(new java.awt.Color(102, 153, 255));
-        jButton4.setText("Place Order");
+        lableCustId.setForeground(new java.awt.Color(204, 204, 204));
+        lableCustId.setText("Customer ID");
 
-        lableCustName.setBackground(new java.awt.Color(153, 153, 153));
-        lableCustName.setForeground(new java.awt.Color(153, 153, 153));
-        lableCustName.setText("Customer Name");
+        lableItemId.setForeground(new java.awt.Color(204, 204, 204));
+        lableItemId.setText("Item ID");
 
-        labelItemName.setBackground(new java.awt.Color(153, 153, 153));
-        labelItemName.setForeground(new java.awt.Color(153, 153, 153));
-        labelItemName.setText("Item Name");
+        btnPlaceOrder.setBackground(new java.awt.Color(102, 153, 255));
+        btnPlaceOrder.setForeground(new java.awt.Color(0, 0, 102));
+        btnPlaceOrder.setText("Place Order");
+        btnPlaceOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlaceOrderActionPerformed(evt);
+            }
+        });
+
+        clearTable.setBackground(new java.awt.Color(102, 153, 255));
+        clearTable.setForeground(new java.awt.Color(0, 0, 102));
+        clearTable.setText("Clear Table");
+        clearTable.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                clearTableActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -156,89 +176,93 @@ public class OrderPanelView extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
+                .addGap(58, 58, 58)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButton4)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(clearTable)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnPlaceOrder))
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(40, 40, 40)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtOrderID))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtCustID, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(txtItemID)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(txtOrderId, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                            .addComponent(jLabel3)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(txtCustIdSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(jLabel4)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(txtItemCodeSearch)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(btnCustIdSearch)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(lableCustName))
-                                        .addGroup(layout.createSequentialGroup()
-                                            .addComponent(btnItemSearch)
-                                            .addGap(18, 18, 18)
-                                            .addComponent(labelItemName))))
+                                    .addComponent(btnCustIdSearch)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(lableCustId))
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(jLabel5)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtQty, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(25, 25, 25)
-                                    .addComponent(jLabel6)
-                                    .addGap(18, 18, 18)
-                                    .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(34, 34, 34)
-                                    .addComponent(btnAddCart))))
+                                    .addComponent(btnItemIdSearch)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(lableItemId))))
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(31, 31, 31)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 652, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(39, Short.MAX_VALUE))
+                            .addComponent(jLabel5)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtQty, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jLabel6)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btnAddToCard))
+                        .addComponent(jScrollPane1)))
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(44, 44, 44)
+                .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(txtOrderId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txtOrderID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtCustIdSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCustID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnCustIdSearch)
-                    .addComponent(lableCustName))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(lableCustId))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(txtItemCodeSearch, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnItemSearch)
-                    .addComponent(labelItemName))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(txtItemID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnItemIdSearch)
+                    .addComponent(lableItemId))
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(txtQty, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6)
                     .addComponent(txtDiscount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAddCart))
+                    .addComponent(btnAddToCard))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4)
-                .addGap(0, 17, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnPlaceOrder)
+                    .addComponent(clearTable))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnAddToCardActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddToCardActionPerformed
+        addToCart();
+    }//GEN-LAST:event_btnAddToCardActionPerformed
     private void btnCustIdSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCustIdSearchActionPerformed
         try {
-            custSearch();
+            searchCustId();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(OrderPanelView.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
@@ -246,7 +270,7 @@ public class OrderPanelView extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnCustIdSearchActionPerformed
 
-    private void btnItemSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemSearchActionPerformed
+    private void btnItemIdSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnItemIdSearchActionPerformed
         try {
             itemSearch();
         } catch (ClassNotFoundException ex) {
@@ -254,51 +278,22 @@ public class OrderPanelView extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(OrderPanelView.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_btnItemSearchActionPerformed
+    }//GEN-LAST:event_btnItemIdSearchActionPerformed
 
-    private void btnAddCartActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCartActionPerformed
+    private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
+        placeOrder();
+    }//GEN-LAST:event_btnPlaceOrderActionPerformed
+
+    private void clearTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearTableActionPerformed
         tableLoard();
-    }//GEN-LAST:event_btnAddCartActionPerformed
+    }//GEN-LAST:event_clearTableActionPerformed
 
-    private void itemSearch() throws ClassNotFoundException, SQLException{
-        String id = txtItemCodeSearch.getText();
-        ItemDto dto = itemController.searchItem(id);
-        
-        if(dto == null){
-            JOptionPane.showMessageDialog(this, "Item Not Found!!");
-        }else{
-            labelItemName.setText(dto.getDescription());
-        }
-    }
-    
-    private void custSearch() throws ClassNotFoundException, SQLException{
-        String id = txtCustIdSearch.getText(); 
-        CustomerDto dto = custController.searchCust(id);
-        if(dto == null){
-            JOptionPane.showMessageDialog(this,"Customer Not found!!");
-        }else{
-            String title = dto.getCustTitle();
-            String name = dto.getCustName();
-            lableCustName.setText(title + " " + name);
-        }
-    }
-
-    private void tableLoard(){
-        String [] columns = {"OrderID","ItemCode","OrderQTY","Discount"};
-        DefaultTableModel dtm = new DefaultTableModel(columns, columnNumber);
-        
-        List<OrderDto> rowdatas =  new ArrayList<>();
-        Object [] rowData = {txtOrderId.getText(),txtItemCodeSearch.getText(),txtQty.getText(),txtDiscount.getText()};
-        dtm.addRow(rowData);
-        
-        table.setModel(dtm);
-    }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAddCart;
+    private javax.swing.JButton btnAddToCard;
     private javax.swing.JButton btnCustIdSearch;
-    private javax.swing.JButton btnItemSearch;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnItemIdSearch;
+    private javax.swing.JButton btnPlaceOrder;
+    private javax.swing.JButton clearTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -307,13 +302,98 @@ public class OrderPanelView extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel labelItemName;
-    private javax.swing.JLabel lableCustName;
+    private javax.swing.JLabel lableCustId;
+    private javax.swing.JLabel lableItemId;
     private javax.swing.JTable table;
-    private javax.swing.JTextField txtCustIdSearch;
+    private javax.swing.JTextField txtCustID;
     private javax.swing.JTextField txtDiscount;
-    private javax.swing.JTextField txtItemCodeSearch;
-    private javax.swing.JTextField txtOrderId;
+    private javax.swing.JTextField txtItemID;
+    private javax.swing.JTextField txtOrderID;
     private javax.swing.JTextField txtQty;
     // End of variables declaration//GEN-END:variables
+    
+    private void searchCustId() throws ClassNotFoundException, SQLException{
+        String id = txtCustID.getText();
+        CustomerDto res = custContro.searchCust(id);
+        
+        if(res == null){
+            JOptionPane.showMessageDialog(this, "Customer Not Found!");
+            txtCustID.setText("");
+        }else{
+            lableCustId.setText(res.getCustTitle() + "." + res.getCustName());
+        }
+    }
+    
+    private void itemSearch() throws ClassNotFoundException, SQLException{
+        String id = txtItemID.getText();
+        ItemDto res = itemContro.searchItem(id);
+        
+        if(res == null){
+            JOptionPane.showMessageDialog(this, "Item Not Found!");
+            txtItemID.setText("");
+        }else{
+            lableItemId.setText(res.getDescription() + " | " + res.getPackSize() + " | " + res.getQty());
+        }
+    }
+    
+    private void tableLoard(){
+        String [] columns = {"Item ID","Qty","Discount"};
+        DefaultTableModel dtm = new DefaultTableModel(columns, 0);
+        table.setModel(dtm);
+    }
+    
+    private void addToCart(){
+        OrderDetailDto dto = new OrderDetailDto();
+        
+        if(txtItemID.getText().equals("") && txtQty.getText().equals("") && txtDiscount.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Before Add To Cart Fill Text!");
+        }else{
+            dto.setItemId(txtItemID.getText());
+            dto.setQty(Integer.parseInt(txtQty.getText()));
+            dto.setDiscount(Integer.parseInt(txtDiscount.getText()));
+
+            orderDetailDto.add(dto);
+            DefaultTableModel dtm = (DefaultTableModel)table.getModel();
+            Object [] rowData = {dto.getItemId(),dto.getQty(),dto.getDiscount()};
+            dtm.addRow(rowData);
+
+            clearItem();
+        }
+    }
+    
+    private void clearItem(){
+        txtItemID.setText("");
+        txtQty.setText("");
+        txtDiscount.setText("");
+    }
+    
+    private void placeOrder(){
+        try{
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String date = sdf.format(new Date());
+
+            OrderDto dto = new OrderDto();
+
+            dto.setCustId(txtCustID.getText());
+            dto.setDate(date);
+            dto.setOrderId(txtOrderID.getText());
+            dto.setOrderDetailDto(orderDetailDto);
+
+            String res = orderController.placeOrder(dto);
+            JOptionPane.showMessageDialog(this, res);
+           
+        }catch(Exception e){
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
+    }
+    
+    private void clearAllText(){
+        txtItemID.setText("");
+        txtQty.setText("");
+        txtDiscount.setText("");
+        txtCustID.setText("");
+        lableCustId.setText("Customer ID");
+        lableItemId.setText("Item ID");
+    }
 }

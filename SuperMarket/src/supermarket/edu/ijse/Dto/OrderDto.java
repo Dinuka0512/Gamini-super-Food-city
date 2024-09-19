@@ -3,61 +3,62 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package supermarket.edu.ijse.Dto;
-
+import java.util.ArrayList;
 /**
  *
  * @author dinuka
  */
 public class OrderDto {
-    private String OrderID;
-    private String ItemCode;
-    private int OrderQTY;
-    private int Discount;
+    private String orderId;
+    private String date;
+    private String custId;
+
+    private ArrayList<OrderDetailDto> orderDetailDto;
 
     public OrderDto() {
     }
 
-    public OrderDto(String OrderID, String ItemCode, int OrderQTY, int Discount) {
-        this.OrderID = OrderID;
-        this.ItemCode = ItemCode;
-        this.OrderQTY = OrderQTY;
-        this.Discount = Discount;
+    public OrderDto(String orderId, String date, String custId, ArrayList<OrderDetailDto> orderDetailDto) {
+        this.orderId = orderId;
+        this.date = date;
+        this.custId = custId;
+        this.orderDetailDto = orderDetailDto;
     }
 
-    public String getOrderID() {
-        return OrderID;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setOrderID(String OrderID) {
-        this.OrderID = OrderID;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
-    public String getItemCode() {
-        return ItemCode;
+    public String getDate() {
+        return date;
     }
 
-    public void setItemCode(String ItemCode) {
-        this.ItemCode = ItemCode;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public int getOrderQTY() {
-        return OrderQTY;
+    public String getCustId() {
+        return custId;
     }
 
-    public void setOrderQTY(int OrderQTY) {
-        this.OrderQTY = OrderQTY;
+    public void setCustId(String custId) {
+        this.custId = custId;
     }
 
-    public int getDiscount() {
-        return Discount;
+    public ArrayList<OrderDetailDto> getOrderDetailDto() {
+        return orderDetailDto;
     }
 
-    public void setDiscount(int Discount) {
-        this.Discount = Discount;
+    public void setOrderDetailDto(ArrayList<OrderDetailDto> orderDetailDto) {
+        this.orderDetailDto = orderDetailDto;
     }
 
     @Override
     public String toString() {
-        return "OrderDto{" + "OrderID=" + OrderID + ", ItemCode=" + ItemCode + ", OrderQTY=" + OrderQTY + ", Discount=" + Discount + '}';
+        return "OrderDto{" + "orderId=" + orderId + ", date=" + date + ", custId=" + custId + ", orderDetailDto=" + orderDetailDto + '}';
     }
 }

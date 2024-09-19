@@ -32,7 +32,6 @@ public class MainFrame extends javax.swing.JFrame {
         btnCustManage = new javax.swing.JButton();
         btnItemManage = new javax.swing.JButton();
         btnOrderManage = new javax.swing.JButton();
-        btnOrderDetailManage = new javax.swing.JButton();
         panel = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -58,8 +57,9 @@ public class MainFrame extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(199, 255, 216));
 
         btnCustManage.setBackground(new java.awt.Color(54, 84, 134));
+        btnCustManage.setFont(new java.awt.Font("Liberation Sans", 0, 13)); // NOI18N
         btnCustManage.setForeground(new java.awt.Color(255, 255, 255));
-        btnCustManage.setText("Customer");
+        btnCustManage.setText("Manage Customer");
         btnCustManage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCustManageActionPerformed(evt);
@@ -68,7 +68,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         btnItemManage.setBackground(new java.awt.Color(54, 84, 134));
         btnItemManage.setForeground(new java.awt.Color(255, 255, 255));
-        btnItemManage.setText("Items");
+        btnItemManage.setText("Manage Items");
         btnItemManage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnItemManageActionPerformed(evt);
@@ -77,16 +77,12 @@ public class MainFrame extends javax.swing.JFrame {
 
         btnOrderManage.setBackground(new java.awt.Color(54, 84, 134));
         btnOrderManage.setForeground(new java.awt.Color(255, 255, 255));
-        btnOrderManage.setText("Orders");
+        btnOrderManage.setText("Manage Orders");
         btnOrderManage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnOrderManageActionPerformed(evt);
             }
         });
-
-        btnOrderDetailManage.setBackground(new java.awt.Color(54, 84, 134));
-        btnOrderDetailManage.setForeground(new java.awt.Color(255, 255, 255));
-        btnOrderDetailManage.setText("Order Details");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -95,7 +91,6 @@ public class MainFrame extends javax.swing.JFrame {
             .addComponent(btnCustManage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnItemManage, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
             .addComponent(btnOrderManage, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
-            .addComponent(btnOrderDetailManage, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -106,9 +101,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(btnItemManage, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnOrderManage, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnOrderDetailManage, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(359, Short.MAX_VALUE))
+                .addContainerGap(404, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelLayout = new javax.swing.GroupLayout(panel);
@@ -191,7 +184,6 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCustManage;
     private javax.swing.JButton btnItemManage;
-    private javax.swing.JButton btnOrderDetailManage;
     private javax.swing.JButton btnOrderManage;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
